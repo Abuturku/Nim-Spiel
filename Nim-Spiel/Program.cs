@@ -8,7 +8,7 @@ namespace Nim_Spiel
     class Program
     {
         static string input;
-        static string GameMode;
+        static string gameMode;
         static LocalPlayer lPlayer1;
         static LocalPlayer lPlayer2;
         static NetworkPlayer nPlayer1;
@@ -22,13 +22,14 @@ namespace Nim_Spiel
                 Console.Clear();
                 displayMainMenu();
 
-                if (GameMode.Equals("local"))
+                if (gameMode.Equals("local"))
                 {
                     Console.WriteLine("\nLokales Spiel gewählt\n");
 
                     //Console.ReadKey();
                     //Console.WriteLine();
                     setSettingsLocalGame();
+                    Console.Clear();
                     game.Start();
                     Console.WriteLine("Nochmal spielen? Gebe 'y' (Ja) oder 'n' (Nein) ein");
                     input = Console.ReadLine();
@@ -39,7 +40,7 @@ namespace Nim_Spiel
                     }
                 }
 
-                if (GameMode.Equals("network"))
+                if (gameMode.Equals("network"))
                 {
                     Console.WriteLine("Netzwerkspiel gewählt");
                     Console.ReadKey();
@@ -62,12 +63,12 @@ namespace Nim_Spiel
 
             if (input.Equals("1"))
             {
-                GameMode = "local";
+                gameMode = "local";
                 //Console.ReadKey();
             }
             else if (input.Equals("2"))
             {
-                GameMode = "network";
+                gameMode = "network";
                 //Console.ReadKey();
             }
             else if (input.Equals("3"))
@@ -77,6 +78,13 @@ namespace Nim_Spiel
                 Console.WriteLine("Drücke eine beliebige Taste");
                 Console.ReadKey();
                 Console.WriteLine();
+                displayMainMenu();
+            }
+            else
+            {
+                Console.WriteLine("Ungültige Eingabe. Drücke Eingabe, um fortzufahren.");
+                Console.ReadLine();
+                Console.Clear();
                 displayMainMenu();
             }
 
@@ -91,6 +99,10 @@ namespace Nim_Spiel
             Console.WriteLine("Jetzt werden die Einstellungen festgelegt." + 
                 "\nSpieler 1, wie soll ich dich nennen?");
             input = Console.ReadLine();
+            if (input.Equals(""))
+            {
+                input = "Spieler 1";
+            }
             Console.WriteLine();
             lPlayer1 = new LocalPlayer(input);
             
@@ -99,6 +111,10 @@ namespace Nim_Spiel
 
             Console.WriteLine("Spieler 2, wie soll ich dich nennen?");
             input = Console.ReadLine();
+            if (input.Equals(""))
+            {
+                input = "Spieler 2";
+            }
             Console.WriteLine();
             lPlayer2 = new LocalPlayer(input);
 
@@ -114,18 +130,27 @@ namespace Nim_Spiel
             Console.WriteLine("\nLege die Hözlchenanzahl fest. Minimum = 13");
             input = Console.ReadLine();
 
-            if (Convert.ToInt16(input) < 13)
+
+            try
             {
-                Console.WriteLine("\nUnzulässiger Wert! Versuch's nochmal.\n");
+                if (Convert.ToInt16(input) < 13)
+                {
+                    Console.WriteLine("\nUnzulässiger Wert! Versuch's nochmal.");
+                    setSticksAmount();
+                }
+                else
+                {
+                    game = new LocalGame(Convert.ToInt16(input), lPlayer1, lPlayer2);
+                    
+                    //Console.ReadKey();
+                }
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Probier es nochmal.");
                 setSticksAmount();
             }
-            else
-            {
-                game = new LocalGame(Convert.ToInt16(input), lPlayer1, lPlayer2);
-                Console.WriteLine("\nOk, los geht's! {0} fängt an!", lPlayer1.Name);
-                //Console.ReadKey();
-            }
- 
+
         }
     }
 }

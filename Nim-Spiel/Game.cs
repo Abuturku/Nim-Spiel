@@ -84,7 +84,24 @@ namespace Nim_Spiel
 
         }
 
-        
+        public Player DetermineRandomPlayer(Player player1, Player player2)
+        {
+            Player determinedPlayer = player1;
+
+            Random rnd = new Random();
+            int x = rnd.Next(100);
+
+            if (x < 50)
+            {
+                
+            }
+            else
+            {
+                determinedPlayer = player2;
+            }
+
+            return determinedPlayer;
+        }
 
     }
 }

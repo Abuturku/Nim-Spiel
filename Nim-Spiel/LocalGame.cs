@@ -25,7 +25,8 @@ namespace Nim_Spiel
 
         public void Start()
         {
-            this.ActivePlayer = this.Player1;
+            this.ActivePlayer = DetermineRandomPlayer(this.Player1, this.Player2);
+            Console.WriteLine("\nOk, los geht's! {0} fängt an!", this.ActivePlayer.Name);
 
             while (this.Sticks > 0)
             {
