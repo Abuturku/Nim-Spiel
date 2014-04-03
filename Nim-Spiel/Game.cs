@@ -2,23 +2,18 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Timers;
 
 namespace Nim_Spiel
 {
     abstract class Game
     {
 
-        private int defaultValue = 13;
-        private Player player1;
-        private Player player2;
+        public int defaultValue = 13;
         private int sticks;
-        private Player activePlayer;
 
-        public int DefaultValue
-        {
-            get;
-            private set;
-        }
+        public Timer timer;
+
 
         public Player Player1
         {
@@ -56,8 +51,8 @@ namespace Nim_Spiel
                 {
                     
                     Console.WriteLine("\n{0}, du ziehst das letzte Hölzchen, du hast leider verloren!\n", this.ActivePlayer.Name);
-                    Console.WriteLine("Drücke eine beliebige Taste");
-                    Console.ReadLine();
+                    timer.Stop();
+                    
                 }
             }
             else
@@ -74,10 +69,30 @@ namespace Nim_Spiel
             return false;
         }
 
-        public void InterruptTurn(Player currentPlayer)
+        public void InterruptTurnEvent(object source, ElapsedEventArgs e)
         {
+            Console.WriteLine("Du hast leider zu lange gebraucht, {0}\n", this.ActivePlayer.Name);
+            timer.Stop();
 
+            SwapActivePlayer();
+
+            Console.WriteLine("{0}, du bist dran.\nWähle deine Zahl", this.ActivePlayer.Name);
+            timer.Start();
         }
+
+        
+        public void SwapActivePlayer()
+        {
+            if (this.ActivePlayer == this.Player1)
+            {
+                this.ActivePlayer = this.Player2;
+            }
+            else //if (this.ActivePlayer == this.Player2)
+            {
+                this.ActivePlayer = this.Player1;
+            }
+        }
+
 
         public void SaveHighscore(float score)
         {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace Nim_Spiel
 {
@@ -25,12 +26,13 @@ namespace Nim_Spiel
                 if (gameMode.Equals("local"))
                 {
                     Console.WriteLine("\nLokales Spiel gewählt\n");
-
+                    Thread.Sleep(500);
                     //Console.ReadKey();
                     //Console.WriteLine();
                     setSettingsLocalGame();
                     Console.Clear();
                     game.Start();
+                    Thread.Sleep(1000);
                     Console.WriteLine("Nochmal spielen? Gebe 'y' (Ja) oder 'n' (Nein) ein");
                     input = Console.ReadLine();
 
@@ -74,10 +76,10 @@ namespace Nim_Spiel
             else if (input.Equals("3"))
             {
                 Console.WriteLine("\nAlso, das Spiel ist relativ einfach:\nEs gibt je nach Eingabe (aber mindestens 13) eine Anzahl von Hölzchen.\n" +
-                "Jeder Spieler darf maximal 3, muss aber mindestens 1 Hölzchen ziehen. \nDerjenige, der das letzte Hölzchen zieht verliert das Spiel.\nSimpel, nicht wahr?\n");
+                "Jeder Spieler darf maximal 3, muss aber mindestens 1 Hölzchen ziehen. Dafür hat jeder 30 Sekunden Zeit. \nDerjenige, der das letzte Hölzchen zieht verliert das Spiel.\nSimpel, nicht wahr?\n");
                 Console.WriteLine("Drücke eine beliebige Taste");
                 Console.ReadKey();
-                Console.WriteLine();
+                Console.Clear();
                 displayMainMenu();
             }
             else
@@ -107,7 +109,8 @@ namespace Nim_Spiel
             lPlayer1 = new LocalPlayer(input);
             
 
-            Console.WriteLine("Ok, ich werde dich ab jetzt {0} nennen \n", lPlayer1.Name);
+            Console.WriteLine("Ok, ich werde dich ab jetzt {0} nennen. \n", lPlayer1.Name);
+            Thread.Sleep(1000);
 
             Console.WriteLine("Spieler 2, wie soll ich dich nennen?");
             input = Console.ReadLine();
@@ -119,8 +122,8 @@ namespace Nim_Spiel
             lPlayer2 = new LocalPlayer(input);
 
 
-            Console.WriteLine("Ok, ich werde dich ab jetzt {0} nennen \n", lPlayer2.Name);
-
+            Console.WriteLine("Ok, ich werde dich ab jetzt {0} nennen. \n", lPlayer2.Name);
+            Thread.Sleep(1000);
 
             setSticksAmount();
         }
@@ -141,7 +144,8 @@ namespace Nim_Spiel
                 else
                 {
                     game = new LocalGame(Convert.ToInt16(input), lPlayer1, lPlayer2);
-                    
+                    Console.WriteLine("Hölzchen: {0}", game.Sticks);
+                    Thread.Sleep(800);
                     //Console.ReadKey();
                 }
             }
