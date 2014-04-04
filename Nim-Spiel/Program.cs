@@ -76,7 +76,7 @@ namespace Nim_Spiel
             else if (input.Equals("3"))
             {
                 Console.WriteLine("\nAlso, das Spiel ist relativ einfach:\nEs gibt je nach Eingabe (aber mindestens 13) eine Anzahl von Hölzchen.\n" +
-                "Jeder Spieler darf maximal 3, muss aber mindestens 1 Hölzchen ziehen. Dafür hat jeder 30 Sekunden Zeit. \nDerjenige, der das letzte Hölzchen zieht verliert das Spiel.\nSimpel, nicht wahr?\n");
+                "Jeder Spieler darf maximal 3, muss aber mindestens 1 Hölzchen ziehen. Dafür hat jeder 12,5 Sekunden Zeit. \nDerjenige, der das letzte Hölzchen zieht verliert das Spiel.\nSimpel, nicht wahr?\n");
                 Console.WriteLine("Drücke eine beliebige Taste");
                 Console.ReadKey();
                 Console.Clear();

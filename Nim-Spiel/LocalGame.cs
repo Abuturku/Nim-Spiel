@@ -28,7 +28,7 @@ namespace Nim_Spiel
         public void Start()
         {
 
-            timer = new System.Timers.Timer(30000);
+            timer = new System.Timers.Timer(12500);
             timer.Elapsed += new ElapsedEventHandler(InterruptTurnEvent);
 
             this.ActivePlayer = DetermineRandomPlayer(this.Player1, this.Player2);
@@ -47,18 +47,18 @@ namespace Nim_Spiel
                     timer.Start();
                     TakeStickOutOfGame(Convert.ToInt16(Console.ReadLine()), this.ActivePlayer);
 
-                    if (this.Sticks > 0)
-                    {
-                        
-                        timer.Stop();
-                    }
-
+                    //Console.WriteLine("\nVerbleibende Hölzchen: {0}", this.Sticks);
+                    
+                    timer.Stop();
 
                     SwapActivePlayer();
                 }
                 catch (System.FormatException)
                 {
-                    Console.WriteLine("Unzulässige Eingabe!");
+                    if (this.Sticks > 0)
+                    {
+                        Console.WriteLine("Unzulässige Eingabe!");
+                    }
                 }
 
             }

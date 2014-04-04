@@ -46,14 +46,20 @@ namespace Nim_Spiel
             {
                 this.Sticks = this.Sticks - amount;
 
-
-                if (this.sticks <= 0 )
+                if (this.Sticks <= 0 )
                 {
-                    
+                    this.Sticks = 0;
+                    Console.WriteLine("\nVerbleibende Hölzchen: {0}\n", this.Sticks);
                     Console.WriteLine("\n{0}, du ziehst das letzte Hölzchen, du hast leider verloren!\n", this.ActivePlayer.Name);
                     timer.Stop();
-                    
                 }
+                else
+                {
+                    Console.WriteLine("\nVerbleibende Hölzchen: {0}", this.Sticks);
+                    timer.Stop();
+                }
+
+                
             }
             else
             {
@@ -71,13 +77,30 @@ namespace Nim_Spiel
 
         public void InterruptTurnEvent(object source, ElapsedEventArgs e)
         {
-            Console.WriteLine("Du hast leider zu lange gebraucht, {0}\n", this.ActivePlayer.Name);
             timer.Stop();
 
-            SwapActivePlayer();
+            int random;
+            Random rnd = new Random();
+            random = rnd.Next(1, 4);
 
-            Console.WriteLine("{0}, du bist dran.\nWähle deine Zahl", this.ActivePlayer.Name);
-            timer.Start();
+            Console.WriteLine("Du hast leider zu lange gebraucht, {0}.\nDu ziehst automatisch {1} Hölzchen.\n", this.ActivePlayer.Name, random);
+
+
+            TakeStickOutOfGame(random, this.ActivePlayer);
+            
+            if (this.Sticks > 0)
+            {
+                SwapActivePlayer();
+
+                Console.WriteLine("{0}, du bist dran.\nWähle deine Zahl.", this.ActivePlayer.Name);
+                timer.Start();
+
+            }
+            else
+            {
+                Console.Write("\r");
+            }
+
         }
 
         
