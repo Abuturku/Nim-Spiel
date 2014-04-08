@@ -44,12 +44,19 @@ namespace Nim_Spiel
                 {
                     Console.WriteLine("{0}, wähle deine Zahl!", this.ActivePlayer.Name);
 
-                    timer.Start();
-                    TakeStickOutOfGame(Convert.ToInt16(Console.ReadLine()), this.ActivePlayer);
+                    if (this.ActivePlayer.Name.Equals("Computer"))
+                    {
+                        ComputerPlayer cp = (ComputerPlayer) this.Player2;
+                        cp.DoATurn();
+                    }
+                    else
+                    {
+                        timer.Start();
+                        TakeStickOutOfGame(Convert.ToInt16(Console.ReadLine()), this.ActivePlayer);
+                        timer.Stop();
+                    }
 
                     //Console.WriteLine("\nVerbleibende Hölzchen: {0}", this.Sticks);
-                    
-                    timer.Stop();
 
                     SwapActivePlayer();
                 }

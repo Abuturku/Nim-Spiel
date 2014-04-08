@@ -13,22 +13,29 @@ namespace Nim_Spiel
         public void DoATurn()
         {
             Game game = Program.game;
-            int x;
+            int x = 0;
             int remainingSticks = game.Sticks;
-            if ((game.Sticks % 4) == 1)
+
+            if ((remainingSticks % 4) == 1)
             {
                 Random rnd = new Random();
                 x = rnd.Next(1, 4);
 
-                game.TakeStickOutOfGame(x, game.Player2);
             }
-            else
+            else if ((remainingSticks % 4) == 2)
             {
-                if (true)
-                {
-                    
-                }
+                x = 1;
             }
+            else if ((remainingSticks % 4) == 3)
+            {
+                x = 2;
+            }
+            else if ((remainingSticks % 4) == 0)
+            {
+                x = 3;
+            }
+
+            game.TakeStickOutOfGame(x, game.Player2);
         }
 
     }
