@@ -109,6 +109,11 @@ namespace Nim_Spiel
             if (this.ActivePlayer == this.Player1)
             {
                 this.ActivePlayer = this.Player2;
+                if (this.Player2.Name.Equals("Computer"))
+                {
+                    ComputerPlayer cp = (ComputerPlayer) this.Player2;
+                    cp.DoATurn();
+                }
             }
             else //if (this.ActivePlayer == this.Player2)
             {

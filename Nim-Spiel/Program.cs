@@ -11,9 +11,9 @@ namespace Nim_Spiel
         static string input;
         static string gameMode;
         static LocalPlayer lPlayer1;
-        static LocalPlayer lPlayer2;
+        static Player player2;
         static NetworkPlayer nPlayer1;
-        static LocalGame game;
+        public static LocalGame game;
         static string playAgain = "y";
 
         static void Main(string[] args)
@@ -112,17 +112,51 @@ namespace Nim_Spiel
             Console.WriteLine("Ok, ich werde dich ab jetzt {0} nennen. \n", lPlayer1.Name);
             Thread.Sleep(1000);
 
-            Console.WriteLine("Spieler 2, wie soll ich dich nennen?");
+            Console.WriteLine("Spieler 2, wie soll ich dich nennen? (Eingabe drücken, um gegen den Computer zu spielen)");
             input = Console.ReadLine();
             if (input.Equals(""))
             {
-                input = "Spieler 2";
+                player2 = new ComputerPlayer();
+                player2.Name = "Computer";
+
+                Console.WriteLine("Schwierigkeit auswählen:" + 
+                    "\n1: \tSchwer" + 
+                    "\n2: \tMittel" + 
+                    "\n3: \tEinfach");
+                
+
+                while (input.Equals("") || !input.Equals("1") || !input.Equals("2")|| !input.Equals("3")) 
+                {
+                    input = Console.ReadLine();
+                    if (input.Equals("1"))
+                    {
+                        Console.WriteLine("Schwer ausgewählt");
+                        break;
+                    }
+                    else if (input.Equals("2"))
+                    {
+                        Console.WriteLine("Mittel ausgewählt");
+                        break;
+                    }
+                    else if (input.Equals("3"))
+                    {
+                        Console.WriteLine("Einfach ausgewählt");
+                        break;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Unzulässige Eingabe");
+                    }
+                }
             }
+            else
+            {
+                player2 = new LocalPlayer(input);
+                Console.WriteLine("Ok, ich werde dich ab jetzt {0} nennen. \n", player2.Name);
+            }
+
             Console.WriteLine();
-            lPlayer2 = new LocalPlayer(input);
-
-
-            Console.WriteLine("Ok, ich werde dich ab jetzt {0} nennen. \n", lPlayer2.Name);
+            
             Thread.Sleep(1000);
 
             setSticksAmount();
@@ -143,7 +177,7 @@ namespace Nim_Spiel
                 }
                 else
                 {
-                    game = new LocalGame(Convert.ToInt16(input), lPlayer1, lPlayer2);
+                    game = new LocalGame(Convert.ToInt16(input), lPlayer1, player2);
                     Console.WriteLine("Hölzchen: {0}", game.Sticks);
                     Thread.Sleep(800);
                     //Console.ReadKey();
