@@ -92,13 +92,25 @@ namespace Nim_Spiel
             {
                 SwapActivePlayer();
 
-                Console.WriteLine("{0}, du bist dran.\nWähle deine Zahl.", this.ActivePlayer.Name);
-                timer.Start();
+                if (this.ActivePlayer.Name.Equals("Computer"))
+                {
+                    ComputerPlayer cp = (ComputerPlayer)this.Player2;
+                    Console.WriteLine("{0}, wähle deine Zahl!", this.ActivePlayer.Name);
+                    cp.DoATurn();
+                    SwapActivePlayer();
+                    Console.WriteLine("{0}, du bist dran.\nWähle deine Zahl.", this.ActivePlayer.Name);
+                    timer.Start();
+                }
+                else
+                {
+                    Console.WriteLine("{0}, du bist dran.\nWähle deine Zahl.", this.ActivePlayer.Name);
+                    timer.Start();
+                }
 
             }
             else
             {
-                Console.Write("\r");
+                Console.Write("\rDrücke eine beliebige Taste.");
             }
 
         }

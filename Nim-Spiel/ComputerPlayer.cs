@@ -12,28 +12,46 @@ namespace Nim_Spiel
 
         public void DoATurn()
         {
+            Random rnd = new Random();
             Game game = Program.game;
             int x = 0;
             int remainingSticks = game.Sticks;
 
-            if ((remainingSticks % 4) == 1)
+            if (this.Difficulty.Equals("hard") || this.Difficulty.Equals("hardcore"))
             {
-                Random rnd = new Random();
-                x = rnd.Next(1, 4);
+               
+                //Console.WriteLine("'Hm, lass mich mal überlegen...'");
+                System.Threading.Thread.Sleep(1000);
 
+                if ((remainingSticks % 4) == 1)
+                {
+                    
+                    x = rnd.Next(1, 4);
+
+                }
+                else if ((remainingSticks % 4) == 2)
+                {
+                    x = 1;
+                }
+                else if ((remainingSticks % 4) == 3)
+                {
+                    x = 2;
+                }
+                else if ((remainingSticks % 4) == 0)
+                {
+                    x = 3;
+                }
             }
-            else if ((remainingSticks % 4) == 2)
+            else if (this.Difficulty.Equals("medium"))
             {
-                x = 1;
+                
             }
-            else if ((remainingSticks % 4) == 3)
+            else if (this.Difficulty.Equals("easy"))
             {
-                x = 2;
+                x = rnd.Next(1, 4);
             }
-            else if ((remainingSticks % 4) == 0)
-            {
-                x = 3;
-            }
+
+            Console.WriteLine(x);
 
             game.TakeStickOutOfGame(x, game.Player2);
         }
