@@ -27,8 +27,21 @@ namespace Nim_Spiel
 
         public void Start()
         {
+            ComputerPlayer cp = new ComputerPlayer();
 
-            timer = new System.Timers.Timer(12500);
+            if (this.Player2.Name.Equals("Computer"))
+            {
+                cp = (ComputerPlayer)this.Player2;
+                if (cp.Difficulty.Equals("hardcore"))
+                {
+                    timer = new System.Timers.Timer(2000);
+                }
+            }     
+            else
+            {
+                timer = new System.Timers.Timer(12500);
+            }
+
             timer.Elapsed += new ElapsedEventHandler(InterruptTurnEvent);
 
             this.ActivePlayer = DetermineRandomPlayer(this.Player1, this.Player2);
@@ -46,7 +59,6 @@ namespace Nim_Spiel
 
                     if (this.ActivePlayer.Name.Equals("Computer"))
                     {
-                        ComputerPlayer cp = (ComputerPlayer) this.Player2;
                         cp.DoATurn();
                     }
                     else

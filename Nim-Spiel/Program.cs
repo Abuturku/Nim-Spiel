@@ -120,27 +120,38 @@ namespace Nim_Spiel
                 player2.Name = "Computer";
 
                 Console.WriteLine("Schwierigkeit auswählen:" + 
-                    "\n1: \tSchwer" + 
+                    "\n1: \tEinfach" + 
                     "\n2: \tMittel" + 
-                    "\n3: \tEinfach");
-                
+                    "\n3: \tSchwer" +
+                    "\n4: \tHardcore");
 
-                while (input.Equals("") || !input.Equals("1") || !input.Equals("2")|| !input.Equals("3")) 
+                ComputerPlayer cp = (ComputerPlayer)player2;
+
+                while (input.Equals("") || !input.Equals("1") || !input.Equals("2")|| !input.Equals("3") || !input.Equals("4")) 
                 {
                     input = Console.ReadLine();
                     if (input.Equals("1"))
                     {
-                        Console.WriteLine("Schwer ausgewählt");
+                        Console.WriteLine("Einfach ausgewählt");
+                        cp.Difficulty = "easy";
                         break;
                     }
                     else if (input.Equals("2"))
                     {
                         Console.WriteLine("Mittel ausgewählt");
+                        cp.Difficulty = "medium";
                         break;
                     }
                     else if (input.Equals("3"))
                     {
-                        Console.WriteLine("Einfach ausgewählt");
+                        Console.WriteLine("Schwer ausgewählt");
+                        cp.Difficulty = "hard";
+                        break;
+                    }
+                    else if (input.Equals("4"))
+                    {
+                        Console.WriteLine("Hardcore ausgewählt");
+                        cp.Difficulty = "hardcore";
                         break;
                     }
                     else
