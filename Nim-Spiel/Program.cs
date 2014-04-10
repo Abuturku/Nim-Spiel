@@ -199,6 +199,11 @@ namespace Nim_Spiel
                 Console.WriteLine("Probier es nochmal.");
                 setSticksAmount();
             }
+            catch (OverflowException)
+            {
+                game = new LocalGame(32767, lPlayer1, player2);
+                Console.WriteLine("Wert war zu hoch; wird automatisch auf 32767 gesetzt.");
+            }
 
         }
     }

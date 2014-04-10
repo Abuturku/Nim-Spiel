@@ -28,14 +28,11 @@ namespace Nim_Spiel
         public void Start()
         {
             ComputerPlayer cp = new ComputerPlayer();
+            cp = (ComputerPlayer)this.Player2;
 
-            if (this.Player2.Name.Equals("Computer"))
+            if (this.Player2.Name.Equals("Computer") && cp.Difficulty.Equals("hardcore"))
             {
-                cp = (ComputerPlayer)this.Player2;
-                if (cp.Difficulty.Equals("hardcore"))
-                {
-                    timer = new System.Timers.Timer(2000);
-                }
+                timer = new System.Timers.Timer(2000);
             }     
             else
             {
