@@ -44,6 +44,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ComputerPlayer.cs" />
+    <Compile Include="Highscore.cs" />
     <Compile Include="LocalGame.cs" />
     <Compile Include="LocalPlayer.cs" />
     <Compile Include="NetworkGame.cs" />

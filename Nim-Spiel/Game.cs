@@ -39,7 +39,6 @@ namespace Nim_Spiel
             set { sticks = value; }
         }
 
-
         public void TakeStickOutOfGame(int amount, Player player)
         {
             if (amount >=1 && amount <= 3)
@@ -49,25 +48,31 @@ namespace Nim_Spiel
                 if (this.Sticks <= 0 )
                 {
                     this.Sticks = 0;
-                    Console.WriteLine("\nVerbleibende Hölzchen: {0}\n", this.Sticks);
-                    Console.WriteLine("\n{0}, du ziehst das letzte Hölzchen, du hast leider verloren!\n", this.ActivePlayer.Name);
+                    Console.SetCursorPosition(0, 2);
+                    Console.Write("\rVerbleibende Hölzchen: {0}\n", this.Sticks);
+                    Console.SetCursorPosition(0, 8);
+                    Console.Write("\n\n\r{0}, du ziehst das letzte Hölzchen, du hast leider verloren!\n", this.ActivePlayer.Name);
                     timer.Stop();
+                    SaveHighscores(this.ActivePlayer.Name, 0, 1);       //Einmal Highscore speichern für den Verlierer
+                    SwapActivePlayer();
+                    SaveHighscores(this.ActivePlayer.Name, 1, 0);       //Und den Gewinner
+                    
                 }
                 else
                 {
-                    Console.WriteLine("\nVerbleibende Hölzchen: {0}", this.Sticks);
+                    Console.SetCursorPosition(0, 2);
+                    Console.Write("\rVerbleibende Hölzchen: {0}  \n", this.Sticks);
+                    //Console.SetCursorPosition(0, 5);
+                    ////Console.Write("\r\t\t\t\t\t\n\r\t\t\t\t\t\n\r\t\t\t\t\t");
                     timer.Stop();
-                }
-
-                
+                }              
             }
             else
             {
-                Console.WriteLine("\nUnzulässige Anzahl, bitte nochmal versuchen\n");
+                Console.Write("\rUnzulässige Anzahl, bitte nochmal versuchen");
                 amount = Convert.ToInt16(Console.ReadLine());
                 this.TakeStickOutOfGame(amount, player);
-            }
-            
+            }   
         }
 
         public bool CheckTimeLimit(Player currentPlayer) 
@@ -83,7 +88,7 @@ namespace Nim_Spiel
             Random rnd = new Random();
             random = rnd.Next(1, 4);
 
-            Console.WriteLine("Du hast leider zu lange gebraucht, {0}.\nDu ziehst automatisch {1} Hölzchen.\n", this.ActivePlayer.Name, random);
+            Console.Write("\n\n\rDu hast leider zu lange gebraucht, {0}.\nDu ziehst automatisch {1} Hölzchen.  \n", this.ActivePlayer.Name, random);
 
 
             TakeStickOutOfGame(random, this.ActivePlayer);
@@ -95,22 +100,28 @@ namespace Nim_Spiel
                 if (this.ActivePlayer.Name.Equals("Computer"))
                 {
                     ComputerPlayer cp = (ComputerPlayer)this.Player2;
-                    Console.WriteLine("{0}, wähle deine Zahl!", this.ActivePlayer.Name);
+                    Console.SetCursorPosition(0, 3);
+                    Console.Write("\r{0}, wähle deine Zahl!  ", this.ActivePlayer.Name);
                     cp.DoATurn();
                     SwapActivePlayer();
-                    Console.WriteLine("{0}, du bist dran.\nWähle deine Zahl.", this.ActivePlayer.Name);
+                    Console.SetCursorPosition(0, 3);
+                    Console.Write("\r{0}, wähle deine Zahl!  ", this.ActivePlayer.Name);
                     timer.Start();
                 }
                 else
                 {
-                    Console.WriteLine("{0}, du bist dran.\nWähle deine Zahl.", this.ActivePlayer.Name);
+                    Console.SetCursorPosition(0, 3);
+
+                    Console.Write("\r{0}, wähle deine Zahl." , this.ActivePlayer.Name);
+                    //Console.Write("\r{0}, wähle deine Zahl.  \r\t\t\t\t\n\r\t\t\t\t\t\n\r\t\t\t\t\t\n\r\t\t\t\t\t\n", this.ActivePlayer.Name);
+                    Console.SetCursorPosition(0, 4);
                     timer.Start();
                 }
 
             }
             else
             {
-                Console.Write("\rDrücke eine beliebige Taste.");
+                Console.WriteLine("Drücke eine beliebige Taste.");
             }
 
         }
@@ -129,17 +140,51 @@ namespace Nim_Spiel
         }
 
 
-        public void SaveHighscore(float score)
+        public void SaveHighscores(string player, int wins, int losses)
         {
+            Highscore hs = new Highscore();
+            hs = hs.GetHighscores();
+            //hs.SaveHighscores();
+            
 
+            if (hs.Players.Count == 0)
+            {
+                hs.AddNewHighscore(player, wins, losses);
+            }
+            else
+            {
+                for (int k = 0; k <= hs.Players.Count; k++)
+                {
+                    try
+                    {
+                        if (player.Equals(hs.Players[k]))   //Durchsuchen der Liste nach dem Namen, falls vorhanden werden Wins und Losses aktualisiert
+                        {
+                            hs.UpdateHighscore(player, wins, losses);
+                            break;
+                        }
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        hs.AddNewHighscore(player, wins, losses);
+                    }
+                    
+                    //if (k == hs.Players.Count)         //wenn der Name nicht in der Liste ist, dann neuen Name anlegen mit Wins und Losses
+                    //{
+                        
+                    //}
+                }
+            }
+
+            hs.SaveHighscores();
         }
+
 
         public Player DetermineRandomPlayer(Player player1, Player player2)
         {
             Player determinedPlayer = player1;
 
             Random rnd = new Random();
-            int x = rnd.Next(100);
+            int x = rnd.Next(101);
 
             if (x < 50)
             {

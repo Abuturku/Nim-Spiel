@@ -21,7 +21,7 @@ namespace Nim_Spiel
             {
                
                 //Console.WriteLine("'Hm, lass mich mal überlegen...'");
-                System.Threading.Thread.Sleep(1000);
+                //System.Threading.Thread.Sleep(1000);
 
                 if ((remainingSticks % 4) == 1)
                 {
@@ -51,7 +51,8 @@ namespace Nim_Spiel
                 x = rnd.Next(1, 4);
             }
 
-            Console.WriteLine(x);
+            Console.SetCursorPosition(0, 6);
+            Console.Write("\rComputer hat {0} Hölzchen gezogen", x);
 
             game.TakeStickOutOfGame(x, game.Player2);
         }

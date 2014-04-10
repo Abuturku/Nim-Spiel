@@ -18,6 +18,8 @@ namespace Nim_Spiel
 
         static void Main(string[] args)
         {
+            Console.Clear();
+
             while (playAgain.Equals("y") || playAgain.Equals("Y"))
             {
                 Console.Clear();
@@ -33,7 +35,7 @@ namespace Nim_Spiel
                     Console.Clear();
                     game.Start();
                     Thread.Sleep(1000);
-                    Console.WriteLine("Nochmal spielen? Gebe 'y' (Ja) oder 'n' (Nein) ein");
+                    Console.WriteLine("\nNochmal spielen? Gebe 'y' (Ja) oder 'n' (Nein) ein");
                     input = Console.ReadLine();
 
                     if (input.Equals("n") || input.Equals("N"))
@@ -41,14 +43,11 @@ namespace Nim_Spiel
                         playAgain = "n";
                     }
                 }
-
                 if (gameMode.Equals("network"))
                 {
                     Console.WriteLine("Netzwerkspiel gewählt");
                     Console.ReadKey();
                 }
-
-
             }
 
         }
@@ -59,7 +58,9 @@ namespace Nim_Spiel
             Console.WriteLine("Bitte wähle: " +
                 "\n1:\tLokales Spiel starten" +
                 "\n2:\tNetzwerkspiel starten (currently not supported!)" +
-                "\n3:\tSpielregeln abfragen");
+                "\n3:\tSpielregeln abfragen" + 
+                "\n4: \tHighscores abrufen" + 
+                "\n5: \tBeenden");
             input = Console.ReadLine();
 
 
@@ -76,11 +77,51 @@ namespace Nim_Spiel
             else if (input.Equals("3"))
             {
                 Console.WriteLine("\nAlso, das Spiel ist relativ einfach:\nEs gibt je nach Eingabe (aber mindestens 13) eine Anzahl von Hölzchen.\n" +
-                "Jeder Spieler darf maximal 3, muss aber mindestens 1 Hölzchen ziehen. Dafür hat jeder 12,5 Sekunden Zeit. \nDerjenige, der das letzte Hölzchen zieht verliert das Spiel.\nSimpel, nicht wahr?\n");
+                "Jeder Spieler darf maximal 3, muss aber mindestens 1 Hölzchen ziehen. Dafür hat jeder 12,5 Sekunden Zeit. " + 
+                "\nDer Hardcore-Schwierigkeitsgrad gibt dir nur 2 Sekunden zum Überlegen." + 
+                "\nDerjenige, der das letzte Hölzchen zieht verliert das Spiel. " + 
+                "\nSimpel, nicht wahr?\n");
                 Console.WriteLine("Drücke eine beliebige Taste");
                 Console.ReadKey();
                 Console.Clear();
                 displayMainMenu();
+            }
+            else if (input.Equals("4"))
+            {
+                Highscore hs = new Highscore();
+                hs = hs.GetHighscores();
+                Console.Write("\n\nName\t\tSiege");
+                Console.SetCursorPosition(Console.CursorLeft + 6, Console.CursorTop);
+                Console.Write("Niederlagen");
+                Console.SetCursorPosition(Console.CursorLeft + 4, Console.CursorTop);
+                Console.Write("Quote");
+                for (int i = 0; i < hs.Players.Count; i++)
+                {
+                    Console.Write("\n{0}", hs.Players[i]);
+                    Console.SetCursorPosition(16, Console.CursorTop);
+                    Console.Write("{0}", hs.Wins[i]);
+                    Console.SetCursorPosition(Console.CursorLeft + 10, Console.CursorTop);
+                    Console.Write("{0}", hs.Losses[i]);
+                    Console.SetCursorPosition(Console.CursorLeft + 14, Console.CursorTop);
+                    try
+                    {
+                        Console.Write("{0}", (hs.Wins[i] / hs.Losses[i]));
+                    }
+                    catch (DivideByZeroException)
+                    {
+                        Console.Write("100");
+                    }
+                    
+                }
+                Console.WriteLine("\n\n");
+                Console.WriteLine("Drücke eine beliebige Taste.");
+                Console.ReadLine();
+                Console.Clear();
+                displayMainMenu();
+            }
+            else if (input.Equals("5"))
+            {
+                Environment.Exit(0);
             }
             else
             {
@@ -203,6 +244,7 @@ namespace Nim_Spiel
             {
                 game = new LocalGame(32767, lPlayer1, player2);
                 Console.WriteLine("Wert war zu hoch; wird automatisch auf 32767 gesetzt.");
+                Thread.Sleep(1500);
             }
 
         }

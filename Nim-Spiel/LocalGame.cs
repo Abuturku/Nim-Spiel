@@ -28,11 +28,19 @@ namespace Nim_Spiel
         public void Start()
         {
             ComputerPlayer cp = new ComputerPlayer();
-            cp = (ComputerPlayer)this.Player2;
+            
 
-            if (this.Player2.Name.Equals("Computer") && cp.Difficulty.Equals("hardcore"))
+            if (this.Player2.Name.Equals("Computer"))
             {
-                timer = new System.Timers.Timer(2000);
+                cp = (ComputerPlayer)this.Player2;
+                if (cp.Difficulty.Equals("hardcore"))
+                {
+                    timer = new System.Timers.Timer(2000);
+                }
+                else
+                {
+                    timer = new System.Timers.Timer(12500);
+                }
             }     
             else
             {
@@ -42,26 +50,30 @@ namespace Nim_Spiel
             timer.Elapsed += new ElapsedEventHandler(InterruptTurnEvent);
 
             this.ActivePlayer = DetermineRandomPlayer(this.Player1, this.Player2);
-            Console.WriteLine("\nOk, los geht's! {0} fängt an!", this.ActivePlayer.Name);
+            Console.WriteLine("Ok, los geht's! {0} fängt an!", this.ActivePlayer.Name);
             Thread.Sleep(2000);
 
-            Console.WriteLine("\nVerbleibende Hölzchen: {0}", this.Sticks);
+            Console.Write("\nVerbleibende Hölzchen: {0}  \n", this.Sticks);
             
 
             while (this.Sticks > 0)
             {
                 try
                 {
-                    Console.WriteLine("{0}, wähle deine Zahl!", this.ActivePlayer.Name);
+                    Console.SetCursorPosition(0, 3);
+                    Console.Write("\r{0}, wähle deine Zahl!\t\t\t\t\n  ", this.ActivePlayer.Name);
 
                     if (this.ActivePlayer.Name.Equals("Computer"))
                     {
+                        Console.SetCursorPosition(0, 4);
                         cp.DoATurn();
                     }
                     else
                     {
                         timer.Start();
+                        Console.SetCursorPosition(0, 4);
                         TakeStickOutOfGame(Convert.ToInt16(Console.ReadLine()), this.ActivePlayer);
+                        Console.Write("\r\t\t\t\t\t\n\r\t\t\t\t\t\n\r\t\t\t\t\t");
                         timer.Stop();
                     }
 
@@ -73,7 +85,7 @@ namespace Nim_Spiel
                 {
                     if (this.Sticks > 0)
                     {
-                        Console.WriteLine("Unzulässige Eingabe!");
+                        Console.Write("\rUnzulässige Eingabe!");
                     }
                 }
 
