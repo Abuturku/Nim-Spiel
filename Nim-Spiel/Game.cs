@@ -41,11 +41,11 @@ namespace Nim_Spiel
 
         public void TakeStickOutOfGame(int amount, Player player)
         {
-            if (amount >=1 && amount <= 3)
+            if (amount >=1 && amount <= 3)      //Kontrollieren, ob zulässige Eingabe gemacht wurde
             {
                 this.Sticks = this.Sticks - amount;
 
-                if (this.Sticks <= 0 )
+                if (this.Sticks <= 0 )      //Kontrollieren, ob das letzte Hölzchen gezogen wurde
                 {
                     this.Sticks = 0;
                     Console.SetCursorPosition(0, 2);
@@ -59,7 +59,7 @@ namespace Nim_Spiel
                     
                 }
                 else
-                {
+                {       //Wenn nicht, dann Verbleibende Hölzchen-Anzahl anzeigen
                     Console.SetCursorPosition(0, 2);
                     Console.Write("\rVerbleibende Hölzchen: {0}  \n", this.Sticks);
                     //Console.SetCursorPosition(0, 5);
@@ -75,21 +75,18 @@ namespace Nim_Spiel
             }   
         }
 
-        public bool CheckTimeLimit(Player currentPlayer) 
-        {
-            return false;
-        }
-
-        public void InterruptTurnEvent(object source, ElapsedEventArgs e)
-        {
+        public void InterruptTurnEvent(object source, ElapsedEventArgs e)       //Timer-Event, das nach Ablauf des Timers getriggert wird; im Prinzip wird hier eigentlich der Zug unterbrochen, 
+        {                                                                       //der andere Spieler ist dran und gleichzeitig wird eine zufällige Anzahl an Hölzchen gezogen
             timer.Stop();
 
             int random;
             Random rnd = new Random();
             random = rnd.Next(1, 4);
 
-            Console.Write("\n\n\rDu hast leider zu lange gebraucht, {0}.\nDu ziehst automatisch {1} Hölzchen.  \n", this.ActivePlayer.Name, random);
+            Console.SetCursorPosition(0, 5);
+            Console.Write("\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\n\t\t\t\t\t\t\rDu hast leider zu lange gebraucht, {0}.\nDu ziehst automatisch {1} Hölzchen.  \n", this.ActivePlayer.Name, random);
 
+            System.Threading.Thread.Sleep(2000);
 
             TakeStickOutOfGame(random, this.ActivePlayer);
             
@@ -101,18 +98,18 @@ namespace Nim_Spiel
                 {
                     ComputerPlayer cp = (ComputerPlayer)this.Player2;
                     Console.SetCursorPosition(0, 3);
-                    Console.Write("\r{0}, wähle deine Zahl!  ", this.ActivePlayer.Name);
+                    Console.Write("\r{0}, wähle deine Zahl!\t\t", this.ActivePlayer.Name);
                     cp.DoATurn();
                     SwapActivePlayer();
                     Console.SetCursorPosition(0, 3);
-                    Console.Write("\r{0}, wähle deine Zahl!  ", this.ActivePlayer.Name);
+                    Console.Write("\r{0}, wähle deine Zahl!\t\t", this.ActivePlayer.Name);
                     timer.Start();
                 }
                 else
                 {
                     Console.SetCursorPosition(0, 3);
 
-                    Console.Write("\r{0}, wähle deine Zahl." , this.ActivePlayer.Name);
+                    Console.Write("\r{0}, wähle deine Zahl.\t\t" , this.ActivePlayer.Name);
                     //Console.Write("\r{0}, wähle deine Zahl.  \r\t\t\t\t\n\r\t\t\t\t\t\n\r\t\t\t\t\t\n\r\t\t\t\t\t\n", this.ActivePlayer.Name);
                     Console.SetCursorPosition(0, 4);
                     timer.Start();
@@ -140,7 +137,7 @@ namespace Nim_Spiel
         }
 
 
-        public void SaveHighscores(string player, int wins, int losses)
+        public void SaveHighscores(string player, int wins, int losses)     //Highscores holen, gegebenfalls aktualisieren, sortieren und wieder speichern
         {
             Highscore hs = new Highscore();
             hs = hs.GetHighscores();
@@ -175,11 +172,12 @@ namespace Nim_Spiel
                 }
             }
 
+            hs.Sort();
             hs.SaveHighscores();
         }
 
 
-        public Player DetermineRandomPlayer(Player player1, Player player2)
+        public Player DetermineRandomPlayer(Player player1, Player player2)     //Zufälligen Spieler ermitteln, verbesserungswürdig?
         {
             Player determinedPlayer = player1;
 

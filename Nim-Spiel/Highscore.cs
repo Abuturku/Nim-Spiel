@@ -11,7 +11,7 @@ namespace Nim_Spiel
     [Serializable()]
     public class Highscore
     {
-        private string path = AppDomain.CurrentDomain.BaseDirectory + "\\highscores.xml";
+        private string path = AppDomain.CurrentDomain.BaseDirectory + "\\highscores.xml";       //Ursprungsort der Anwendung; Dort wird die XML angelegt
 
         public List<string> Players { get; set; }
 
@@ -34,7 +34,7 @@ namespace Nim_Spiel
             this.Losses = new List<int>();
         }
 
-        public void SaveHighscores()
+        public void SaveHighscores()        //Serialisieren; speichern der Highscores in die XML und sie "dauerhaft" verfügbar machen
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Highscore));
 
@@ -49,7 +49,7 @@ namespace Nim_Spiel
             //file.Close();
         }
 
-        public Highscore GetHighscores()
+        public Highscore GetHighscores()        //Deserialisieren; holen der Highscores aus der XML und sie für die Anwendung verfügbar machen
         {
             XmlSerializer serializer = new XmlSerializer(typeof(Highscore));
             Highscore hs = new Highscore();
@@ -86,7 +86,7 @@ namespace Nim_Spiel
             
         }
 
-        public void UpdateHighscore(string name, int wins, int losses)
+        public void UpdateHighscore(string name, int wins, int losses)      //Wins und Losses des jeweiligen Spieler aktualisieren
         {
             for (int i = 0; i < this.Players.Count; i++)
             {
@@ -98,13 +98,69 @@ namespace Nim_Spiel
             }
         }
 
-        public void AddNewHighscore(string name, int wins, int losses)
+        public void AddNewHighscore(string name, int wins, int losses)      //Falls Spieler noch nicht in der Highscore-Liste aufgetaucht ist hinzufügen
         {
             this.GetHighscores();
 
             this.Players.Add(name);
             this.Wins.Add(wins);
             this.Losses.Add(losses);
+        }
+
+        public void Sort()
+        {
+            this.Quicksort(this.Players, this.Wins, this.Losses, 0, this.Players.Count-1);
+        }
+
+        public void Quicksort(List<string> players, List<int> wins, List<int> losses, int left, int right)      //Quicksort auf die Highscore-Listen jagen
+        {
+            int i = left;
+            int j = right;
+            double pivot = Convert.ToDouble(wins[(left+right) / 2]) / (Convert.ToDouble(wins[(left+right) / 2]) + Convert.ToDouble(losses[(left+right) / 2]));
+
+            while (i <= j)
+            {
+
+
+                while (Convert.ToDouble(wins[i]) / (Convert.ToDouble(wins[i]) + Convert.ToDouble(losses[i])) > pivot)
+                {
+                    i++;
+                }
+
+                while (Convert.ToDouble(wins[j]) / (Convert.ToDouble(wins[j]) + Convert.ToDouble(losses[j])) < pivot)
+                {
+                    j--;
+                }
+
+                if (i <= j)
+                {
+                    int tmp = wins[i];
+                    wins[i] = wins[j];
+                    wins[j] = tmp;
+
+                    tmp = losses[i];
+                    losses[i] = losses[j];
+                    losses[j] = tmp;
+
+                    string tmpP = players[i];
+                    players[i] = players[j];
+                    players[j] = tmpP;
+
+                    i++;
+                    j--;
+                }
+            }
+
+            if (left < j)
+            {
+                Quicksort(players, wins, losses, left, j);
+            }
+
+            if (i < right)
+            {
+                Quicksort(players, wins, losses, i, right);
+            }
+
         }
     }
 }

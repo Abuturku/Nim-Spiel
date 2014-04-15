@@ -12,7 +12,7 @@ namespace Nim_Spiel
         static string gameMode;
         static LocalPlayer lPlayer1;
         static Player player2;
-        static NetworkPlayer nPlayer1;
+        //static NetworkPlayer nPlayer1;
         public static LocalGame game;
         static string playAgain = "y";
 
@@ -20,7 +20,7 @@ namespace Nim_Spiel
         {
             Console.Clear();
 
-            while (playAgain.Equals("y") || playAgain.Equals("Y"))
+            while (playAgain.Equals("y") || playAgain.Equals("Y"))      //Siehe unten: Möglichkeit, das Spiel nochmal zu spielen, abhängig von User-Input
             {
                 Console.Clear();
                 displayMainMenu();
@@ -28,13 +28,13 @@ namespace Nim_Spiel
                 if (gameMode.Equals("local"))
                 {
                     Console.WriteLine("\nLokales Spiel gewählt\n");
-                    Thread.Sleep(500);
+                    Thread.Sleep(500);      //Halbe Sekunde warten um den User nicht mit einer Wall of Text zu erschlagen
                     //Console.ReadKey();
                     //Console.WriteLine();
                     setSettingsLocalGame();
                     Console.Clear();
                     game.Start();
-                    Thread.Sleep(1000);
+                    Thread.Sleep(1000);     //Siehe Kommentar drüber
                     Console.WriteLine("\nNochmal spielen? Gebe 'y' (Ja) oder 'n' (Nein) ein");
                     input = Console.ReadLine();
 
@@ -46,7 +46,9 @@ namespace Nim_Spiel
                 if (gameMode.Equals("network"))
                 {
                     Console.WriteLine("Netzwerkspiel gewählt");
-                    Console.ReadKey();
+                    Console.WriteLine("Leider nicht unterstützt. Bye :(");
+                    Thread.Sleep(1000);
+                    Environment.Exit(0);
                 }
             }
 
@@ -69,7 +71,7 @@ namespace Nim_Spiel
                 gameMode = "local";
                 //Console.ReadKey();
             }
-            else if (input.Equals("2"))
+            else if (input.Equals("2"))     //Kümmert eh keinen, kann ich nicht, unfähig bla bla :(
             {
                 gameMode = "network";
                 //Console.ReadKey();
@@ -86,7 +88,7 @@ namespace Nim_Spiel
                 Console.Clear();
                 displayMainMenu();
             }
-            else if (input.Equals("4"))
+            else if (input.Equals("4"))     //Ausgeben der Highscores in möglichst schön
             {
                 Highscore hs = new Highscore();
                 hs = hs.GetHighscores();
@@ -100,12 +102,13 @@ namespace Nim_Spiel
                     Console.Write("\n{0}", hs.Players[i]);
                     Console.SetCursorPosition(16, Console.CursorTop);
                     Console.Write("{0}", hs.Wins[i]);
-                    Console.SetCursorPosition(Console.CursorLeft + 10, Console.CursorTop);
+                    Console.SetCursorPosition(27, Console.CursorTop);
                     Console.Write("{0}", hs.Losses[i]);
-                    Console.SetCursorPosition(Console.CursorLeft + 14, Console.CursorTop);
+                    Console.SetCursorPosition(42, Console.CursorTop);
                     try
                     {
-                        Console.Write("{0}", (hs.Wins[i] / hs.Losses[i]));
+                        double percentage = Convert.ToDouble(hs.Wins[i]) / (Convert.ToDouble(hs.Wins[i]) + Convert.ToDouble(hs.Losses[i]));     //Berechnen der Quote
+                        Console.Write("{0:F3}", percentage);
                     }
                     catch (DivideByZeroException)
                     {
@@ -133,7 +136,7 @@ namespace Nim_Spiel
 
         }
 
-        static public void setSettingsLocalGame()
+        static public void setSettingsLocalGame()       //Festlegen der Einstellungen (Spielernamen, Anzahl der Hölzchen; Bei Computergegner auch Schwierigkeit)
         {
            
             Console.WriteLine();
@@ -168,7 +171,7 @@ namespace Nim_Spiel
 
                 ComputerPlayer cp = (ComputerPlayer)player2;
 
-                while (input.Equals("") || !input.Equals("1") || !input.Equals("2")|| !input.Equals("3") || !input.Equals("4")) 
+                while (input.Equals("") || !input.Equals("1") || !input.Equals("2")|| !input.Equals("3") || !input.Equals("4"))         //Schwierigkeit der KI festlegen
                 {
                     input = Console.ReadLine();
                     if (input.Equals("1"))

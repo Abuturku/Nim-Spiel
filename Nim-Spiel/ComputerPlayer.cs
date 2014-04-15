@@ -17,11 +17,13 @@ namespace Nim_Spiel
             int x = 0;
             int remainingSticks = game.Sticks;
 
-            if (this.Difficulty.Equals("hard") || this.Difficulty.Equals("hardcore"))
+            System.Threading.Thread.Sleep(1000);
+
+            if (this.Difficulty.Equals("hard") || this.Difficulty.Equals("hardcore"))       //Algorithmus, mit dem KI immer gewinnt, solange sie nicht anfängt
             {
                
                 //Console.WriteLine("'Hm, lass mich mal überlegen...'");
-                //System.Threading.Thread.Sleep(1000);
+                
 
                 if ((remainingSticks % 4) == 1)
                 {
@@ -44,7 +46,8 @@ namespace Nim_Spiel
             }
             else if (this.Difficulty.Equals("medium"))
             {
-                
+                //TODO Mittlere Schwierigkeit, d.h. dass zufällig entschieden wird, ob KI einen "guten" (also einen zum Sieg verhelfenden) Turn macht oder nicht; Zur Zeit noch einfache Schwierigkeit
+                x = rnd.Next(1, 4);
             }
             else if (this.Difficulty.Equals("easy"))
             {
@@ -52,7 +55,8 @@ namespace Nim_Spiel
             }
 
             Console.SetCursorPosition(0, 6);
-            Console.Write("\rComputer hat {0} Hölzchen gezogen", x);
+            Console.Write("\rComputer hat {0} Hölzchen gezogen\n\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t", x);        //Feedback für den User
+            //System.Threading.Thread.Sleep(1000);
 
             game.TakeStickOutOfGame(x, game.Player2);
         }
